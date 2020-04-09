@@ -27,3 +27,15 @@ Examples:
 `{30 minutes}` -> `30:00`  
 `{1 minute}` -> `1:00`  
 `{90 seconds}` -> `1:30`
+
+## Contributing
+
+To report issues, use the issues tab and give a detailed report of the problem.  Include:
+- what you were trying to do, including exact commands and parameters
+- what you expected to happen
+- what actually happened
+- the streaming environment you were using (e.g. OBS, Streamlabs OBS, etc.)
+
+To contribute code to the mod messager, fork the repo, develop your changes in a feature branch, and then make a pull request.
+
+To be added as a contributor, so that you can develop on the main repo, request contributor status in the text of the pull request of a contribution.
