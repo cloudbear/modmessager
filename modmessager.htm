@@ -31,6 +31,28 @@
 			background-color: #00AA00;
 			
 		}
+
+        #countdowntext {
+            display: inline-block;
+			font-family: 'Open Sans Condensed';
+			font-weight: 700;
+			color: white;
+			font-size: 60px;
+			margin: 0;
+			
+			margin-left: 15px;
+			white-space: nowrap;
+        }
+
+        #countdownbox {
+            position: absolute;
+			bottom: 0;
+            left: 0;
+			width: 0px;
+			height: 82px;
+			overflow: hidden;
+			background-color: #0000BB;
+        }
 		
 		#testbutton {
 			position: absolute;
@@ -46,7 +68,9 @@
 </head>
 
 <body>
-
+    <div id="countdownbox">
+        <h1 id="countdowntext"></h1>
+    </div>
 	<div id="modmessagebox">
 	    <h1 id="message">WEE TEST!</h1>		
 	</div>
@@ -57,7 +81,7 @@
     // Define configuration options
     const opts = {
         channels: [
-          "limmy"
+          "cl0udbear"
         ]
     };
 
@@ -71,6 +95,10 @@
     // Connect to Twitch:
     client.connect();
 
+    let messageStates = {
+        'alert': false,
+        'timer': false,
+    };
     
     // Called every time a message comes in
     function testMessage(msg) {
@@ -95,7 +123,95 @@
         $("#modmessagebox").animate({width:0}, 500);
         $("#message").animate({"opacity":0, "margin-left":"50px"}, 700);
     }
+
+    function processTimer(message) {
+        const timerRegExp = /{(\d+) (HOURS|MINUTES|SECONDS)}/;
+        const timerText = message.replace(timerRegExp, '%timer%');
+        const components = message.match(timerRegExp);
+        console.log(components);
+        if (!components) {
+            return false;
+        }
+        const quantity = components[1];
+        const unit = components[2];
+        
+        let milliseconds;
+        switch (unit) {
+            case 'HOURS':
+            case 'HOUR':
+                milliseconds = parseInt(quantity) * 60 * 60 * 1000;
+                break;
+            case 'MINUTES':
+            case 'MINUTE':
+                milliseconds = parseInt(quantity) * 60 * 1000;
+                break;
+            case 'SECONDS':
+            case 'SECOND':
+                milliseconds = parseInt(quantity) * 1000;
+                break;
+        }
+
+        return [milliseconds, timerText];
+    }
     
+    // Global scope required here
+    let taggedText;
+    let zero;
+    let tickIntervalID;
+
+    function initialiseTimer(milliseconds) {
+        zero = Date.now() + milliseconds;
+    }
+
+    function tick() {
+        let diff = zero - Date.now();
+        if (diff < 0) {
+            diff = 0;
+            clearInterval(tickIntervalID);
+        }
+        const diffDate = new Date(diff);
+        const hours = diffDate.getUTCHours().toString();
+        const minutes = diffDate.getUTCMinutes().toString();
+        const paddedMinutes = (minutes.length == 1) ? `0${minutes}` : minutes;
+        const seconds = diffDate.getUTCSeconds().toString();
+        const paddedSeconds = (seconds.length == 1) ? `0${seconds}` : seconds;
+        
+        if (hours != "0") timeText = `${hours}:${paddedMinutes}:${paddedSeconds}`;
+        else timeText = `${paddedMinutes}:${paddedSeconds}`;
+
+        let tag = /%timer%/;
+        let timerMessage = taggedText.replace(tag, timeText);
+        
+        $('#message').text(timerMessage);
+    }
+
+    function testTimer(messagefromtwitch) {
+        if (messagefromtwitch.startsWith("!alert ")) {
+            const timer = processTimer(messagefromtwitch.substr(7).toUpperCase());
+            if (timer) {
+                milliseconds = timer[0];
+                taggedText = timer[1];
+                initialiseTimer(milliseconds);
+                
+                $("#modmessagebox").show();
+                tick();
+                tickIntervalID = setInterval('tick()', 500);
+                doAnimation();
+            } else {
+                if (typeof tickIntervalID !== 'undefined') {
+                    clearInterval(tickIntervalID);
+                }
+                $("#modmessagebox").show();
+                $("#message").text(messagefromtwitch.substr(7).toUpperCase());
+                doAnimation();
+            }
+        } else if (messagefromtwitch.startsWith("!delete")) {
+            if (typeof tickIntervalID !== 'undefined') {
+                clearInterval(tickIntervalID);
+            }
+            deleteAnimation();
+        }
+    }
     
     // Called every time a message comes in
     function onMessageHandler(target, context, msg, self) {
@@ -104,16 +220,33 @@
         
         // If the command is known, let's execute it
 
-            if (context.mod || (context["badges-raw"] != null && context["badges-raw"].startsWith("broadcaster"))) {
-		if (commandName.startsWith("!alert ")) {
-			$("#modmessagebox").show();
-			$("#message").text(commandName.substr(7).toUpperCase());
-			doAnimation();
-    
-		} else if (commandName.startsWith("!delete")) {
-            deleteAnimation();
-		}
+        if (context.mod || (context["badges-raw"] != null && context["badges-raw"].startsWith("broadcaster"))) {
+            if (commandName.startsWith("!alert ")) {
+                const timer = processTimer(commandName.substr(7).toUpperCase());
+                if (timer) {
+                    milliseconds = timer[0];
+                    taggedText = timer[1];
+                    initialiseTimer(milliseconds);
+                    
+                    $("#modmessagebox").show();
+                    tick();
+                    tickIntervalID = setInterval('tick()', 500);
+                    doAnimation();
+                } else {
+                    if (typeof tickIntervalID !== 'undefined') {
+                        clearInterval(tickIntervalID);
+                    }
+                    $("#modmessagebox").show();
+                    $("#message").text(commandName.substr(7).toUpperCase());
+                    doAnimation();
+                }
+            } else if (commandName.startsWith("!delete")) {
+                if (typeof tickIntervalID !== 'undefined') {
+                    clearInterval(tickIntervalID);
+                }
+                deleteAnimation();
             }
+        }
 
     }
 
@@ -122,8 +255,3 @@
     }
 </script>
 </html>
-
-
-
-
-
