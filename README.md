@@ -28,7 +28,7 @@ Timer expression examples:
 `{1 minute}` -> `1:00`  
 `{90 seconds}` -> `1:30`
 
-Alert example using the timer:
+Alert example using the timer:  
 `!alert Mudrunner for {90 minutes} and then Warzone` will display `MUDRUNNER FOR 1:30:00 AND THEN WARZONE`, which will then tick down, e.g. `MUDRUNNER FOR 1:29:59 AND THEN WARZONE`, and so on.
 
 ## Contributing
