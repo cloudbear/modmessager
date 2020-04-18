@@ -31,6 +31,7 @@ Examples:
 ## Contributing
 
 To report issues, use the issues tab and give a detailed report of the problem.  Include:
+
 - what you were trying to do, including exact commands and parameters
 - what you expected to happen
 - what actually happened
