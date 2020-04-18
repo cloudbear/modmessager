@@ -14,19 +14,22 @@ E.g. `!alert Here is an alert` displays the alert box with the text "HERE IS AN 
 
 ### Timers
 
-Including a timer expression in braces in the alert message will produce a countdown starting at that time.
+Including a timer expression in braces anywhere in the alert message will produce a countdown in that position in the message, starting at that time.
 
 A timer expression is an integer followed by a time unit, e.g. 'seconds', 'minutes', 'hours'.
 
 The timer expression will display as a countdown in hh:mm:ss.  The hours component will not display when it is zero and it will disappear when a timer that at an hour or more counts to below an hour.
 
-Examples:  
+Timer expression examples:  
 `{1 hour}` -> `1:00:00`  
 `{2 hours}` -> `2:00:00`  
 `{90 minutes}` -> `1:30:00`  
 `{30 minutes}` -> `30:00`  
 `{1 minute}` -> `1:00`  
 `{90 seconds}` -> `1:30`
+
+Alert example using the timer:
+`!alert Mudrunner for {90 minutes} and then Warzone` will display `MUDRUNNER FOR 1:30:00 AND THEN WARZONE`, which will then tick down, e.g. `MUDRUNNER FOR 1:29:59 AND THEN WARZONE`, and so on.
 
 ## Contributing
 
