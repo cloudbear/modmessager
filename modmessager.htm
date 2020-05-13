@@ -30,9 +30,15 @@
 			width: 0px;
 			height: 82px;
 			overflow: hidden;
-			background-color: #00AA00;
-			
 		}
+
+        .alert {
+            background-color: #00AA00;
+        }
+
+        .hotseat {
+            background-color: #AA1100;
+        }
 	</style>
 
 </head>
@@ -46,14 +52,17 @@
 <script type="text/javascript">
 
     // Define configuration options
-    const opts = {
+    const tmiOptions = {
         channels: [
           "limmy"
         ]
     };
+    const alertOptions = {
+        hotseatEmoji: "🔥"
+    };
 
     // Create a client with our options
-    let client = new tmi.client(opts);
+    let client = new tmi.client(tmiOptions);
 
     // Register our event handlers (defined below)
     client.on('message', onMessageHandler);
@@ -70,19 +79,34 @@
 			doAnimation();
     }
 
+    // Hotseat stuff
+    var hotseatuser = null;
+
     // Animate text
     function doAnimation() {
         var textWidth = $("#message").width();
         $("#message").css({"opacity":0, "margin-left":"50px"}); 
         $("#modmessagebox").width(1);
+        $("#modmessagebox").removeClass("hotseat").addClass("alert");
         $("#modmessagebox").animate({width:textWidth+30}, 500);
         $("#message").animate({"opacity":1, "margin-left":"15px"}, 700);
 //        $("#message").animate({width:textWidth+30});
     }
+
+    function doHotseatAnimation() {
+        var textWidth = $("#message").width();
+        $("#message").css({"opacity":0, "margin-left":"50px"}); 
+        $("#modmessagebox").width(1);
+        $("#modmessagebox").removeClass("alert").addClass("hotseat");
+        $("#modmessagebox").animate({width:textWidth+30}, 500);
+        $("#message").animate({"opacity":1, "margin-left":"15px"}, 700);
+    }
     
     // Animate off
     function deleteAnimation() {
+        hotseatuser = null;
         $("#modmessagebox").animate({width:0}, 500);
+        $("#modmessagebox").removeClass("hotseat").addClass("alert");
         $("#message").animate({"opacity":0, "margin-left":"50px"}, 700);
     }
 
@@ -148,6 +172,8 @@
     }
 
     function testTimer(messagefromtwitch) {
+        const hotseatemoji = alertOptions.hotseatEmoji ? `${alertOptions.hotseatEmoji} ` : '';
+
         if (messagefromtwitch.startsWith("!alert ")) {
             const timer = processTimer(messagefromtwitch.substr(7).toUpperCase());
             if (timer) {
@@ -172,6 +198,11 @@
                 clearInterval(tickIntervalID);
             }
             deleteAnimation();
+        } else if (messagefromtwitch.startsWith("!hotseat ")) {
+            $("#modmessagebox").show();
+            hotseatuser = messagefromtwitch.substr(10).toLowerCase();
+            $("#message").text(`${hotseatemoji} ${hotseatuser.toUpperCase()} IS IN THE HOTSEAT ${hotseatemoji}`.trim());
+            doHotseatAnimation();
         }
     }
     
@@ -181,8 +212,9 @@
         const commandName = msg.trim();
         
         // If the command is known, let's execute it
-
         if (context.mod || (context["badges-raw"] != null && context["badges-raw"].startsWith("broadcaster"))) {
+            const hotseatemoji = alertOptions.hotseatEmoji ? `${alertOptions.hotseatEmoji}` : '';
+
             if (commandName.startsWith("!alert ")) {
                 const timer = processTimer(commandName.substr(7).toUpperCase());
                 if (timer) {
@@ -207,6 +239,16 @@
                     clearInterval(tickIntervalID);
                 }
                 deleteAnimation();
+            } else if (commandName.startsWith("!hotseat ")) {
+                $("#modmessagebox").show();
+                hotseatuser = commandName.substr(10).toLowerCase();
+                $("#message").text(`${hotseatemoji} ${hotseatuser.toUpperCase()} IS IN THE HOTSEAT ${hotseatemoji}`.trim());
+                doHotseatAnimation();
+            }
+
+            if (context.username == hotseatuser) {
+                $("#message").text(`${hotseatemoji} ${context['display-name']}: ${commandName} ${hotseatemoji}`.trim());
+                doHotseatAnimation();
             }
         }
 

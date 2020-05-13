@@ -12,7 +12,7 @@ To set the messager to watch your channel, find the following code in the top of
 
 ```javascript
     // Define configuration options
-    const opts = {
+    const tmiOptions = {
         channels: [
           "limmy"
         ]
@@ -31,26 +31,45 @@ Change "limmy" to the name of your channel, i.e. what comes after `twitch.tv/` i
 
 ### Customisation
 
+#### Options
+
+In the top of the JavaScript in `modmessager.htm` is an object called `alertOptions`, which contains things I've made it easier to configure here.
+
+For example, the property `hotseatEmoji` is settable here, which you can use to decide what, if any, emoji appears at the start and end of hotseat messages.
+
+#### Styling
+
 The styling of the alert is specified in CSS near the top of the htm document.
 
 Change the following CSS property to customise the corresponding part of the alert.  Don't change properties not listed here unless you know what you're doing.
 
-| CSS Selector    | Property          | Affects          | Type (Recommended)            | Example  |
-|:----------------|:------------------|:-----------------|:------------------------------|:---------|
-| #message        | font-family       | Font             | Text (name of font)           | `Arial`, `'Open Sans Condensed'`, `'Bahnschrift Regular'` |
-|                 | font-weight       | Boldness         | Number or CSS weight name     | `400`, `900`, `bold`, `bolder`  |
-|                 | color             | Text colour      | Hex or CSS colour name        | `#FFFFFF`, `white`, `#FF0000`, `red`  |
-|                 | font-size         | Text size        | Number with points or pixels  | `60px`, `48pt`  |
-| #modmessagebox  | bottom            | Gap below box    | Number with pixels or 0       | `0`, `0px`, `5px`, `15px`  |
-|                 | left              | Gap left of box  | Number with pixels or 0       | `0`, `0px`, `5px`, `15px`  |
-|                 | height            | Height of box    | Number with pixels            | `82px`  |
-|                 | background-color  | Box colour       | Hex or CSS colour name        | `#00FF00`, `green`, `#000000`, `black`  |
+| CSS Selector    | Property          | Affects                 | Type (Recommended)              | Example  |
+|:----------------|:------------------|:------------------------|:--------------------------------|:---------|
+| #message        | font-family       | Font                    | Text (name of font)             | `Arial`, `'Open Sans Condensed'`, `'Bahnschrift Regular'` |
+|                 | font-weight       | Boldness                | Number or CSS weight name       | `400`, `900`, `bold`, `bolder`  |
+|                 | color             | Text colour             | Hex or CSS colour name          | `#FFFFFF`, `white`, `#FF0000`, `red`  |
+|                 | font-size         | Text size               | Number with points or pixels    | `60px`, `48pt`  |
+| #modmessagebox  | bottom            | Gap below box           | Number with pixels or 0         | `0`, `0px`, `5px`, `15px`  |
+|                 | left              | Gap left of box         | Number with pixels or 0         | `0`, `0px`, `5px`, `15px`  |
+|                 | height            | Height of box           | Number with pixels              | `82px`  |
+| .alert          | background-color  | Box colour of !alert    | Hex, rgb(), or CSS colour name  | `#00FF00`, `green`, `#000000`, `black`  |
+| .hotseat        | background-color  | Box colour of !hotseat  | Hex, rgb(), or CSS colour name  | `#AA1100`, `rgb(139, 0, 0)`, `darkred`  |
 
 ### !alert
 
 A moderator may issue an `!alert` command in the twitch to trigger the alert system to display the text following the command.
 
 E.g. `!alert Here is an alert` displays the alert box with the text "HERE IS AN ALERT"
+
+### !hotseat
+
+A moderator may put a viewer in the hotseat by issuing the command `!hotseat @username`.
+
+The alert box will then switch to hotseat mode and any messages posted by the hotseated viewer will be displayed in the box.
+
+Hotseat mode can be ended by issuing a `!delete` command.
+
+**Be _very_ careful** using hotseat mode as whatever the user sends will be displayed in the box. At present there is no filter on the contents of their message. _Only heatseat those whom you trust not to send to the hotseat box, anything that would breach Twitch ToS._
 
 ### Timers
 
