@@ -46,14 +46,14 @@
 <script type="text/javascript">
 
     // Define configuration options
-    const opts = {
+    const tmiOptions = {
         channels: [
           "limmy"
         ]
     };
 
     // Create a client with our options
-    let client = new tmi.client(opts);
+    let client = new tmi.client(tmiOptions);
 
     // Register our event handlers (defined below)
     client.on('message', onMessageHandler);
