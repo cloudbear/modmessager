@@ -57,6 +57,9 @@
           "limmy"
         ]
     };
+    const alertOptions = {
+        hotseatEmoji: "🔥"
+    };
 
     // Create a client with our options
     let client = new tmi.client(tmiOptions);
@@ -169,6 +172,8 @@
     }
 
     function testTimer(messagefromtwitch) {
+        const hotseatemoji = alertOptions.hotseatEmoji ? `${alertOptions.hotseatEmoji} ` : '';
+
         if (messagefromtwitch.startsWith("!alert ")) {
             const timer = processTimer(messagefromtwitch.substr(7).toUpperCase());
             if (timer) {
@@ -196,7 +201,7 @@
         } else if (messagefromtwitch.startsWith("!hotseat ")) {
             $("#modmessagebox").show();
             hotseatuser = messagefromtwitch.substr(10).toLowerCase();
-            $("#message").text("🔥 " + hotseatuser.toUpperCase() + " IS IN THE HOTSEAT 🔥");
+            $("#message").text(`${hotseatemoji} ${hotseatuser.toUpperCase()} IS IN THE HOTSEAT ${hotseatemoji}`.trim());
             doHotseatAnimation();
         }
     }
@@ -207,8 +212,9 @@
         const commandName = msg.trim();
         
         // If the command is known, let's execute it
-
         if (context.mod || (context["badges-raw"] != null && context["badges-raw"].startsWith("broadcaster"))) {
+            const hotseatemoji = alertOptions.hotseatEmoji ? `${alertOptions.hotseatEmoji}` : '';
+
             if (commandName.startsWith("!alert ")) {
                 const timer = processTimer(commandName.substr(7).toUpperCase());
                 if (timer) {
@@ -236,12 +242,12 @@
             } else if (commandName.startsWith("!hotseat ")) {
                 $("#modmessagebox").show();
                 hotseatuser = commandName.substr(10).toLowerCase();
-                $("#message").text("🔥 " + hotseatuser.toUpperCase() + " IS IN THE HOTSEAT 🔥");
+                $("#message").text(`${hotseatemoji} ${hotseatuser.toUpperCase()} IS IN THE HOTSEAT ${hotseatemoji}`.trim());
                 doHotseatAnimation();
             }
 
             if (context.username == hotseatuser) {
-                $("#message").text("🔥 " + context['display-name'] + ": " + commandName + " 🔥");
+                $("#message").text(`${hotseatemoji} ${context['display-name']}: ${commandName} ${hotseatemoji}`.trim());
                 doHotseatAnimation();
             }
         }
