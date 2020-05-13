@@ -21,6 +21,23 @@ To set the messager to watch your channel, find the following code in the top of
 
 Change "limmy" to the name of your channel, i.e. what comes after `twitch.tv/` in the URL.
 
+### Customisation
+
+The styling of the alert is specified in CSS near the top of the htm document.
+
+Change the following CSS property to customise the corresponding part of the alert.  Don't change properties not listed here unless you know what you're doing.
+
+| CSS Selector    | Property          | Affects          | Type (Recommended)            | Example  |
+|:----------------|:------------------|:-----------------|:------------------------------|:---------|
+| #message        | font-family       | Font             | Text (name of font)           | `Arial`, `'Open Sans Condensed'`, `'Bahnschrift Regular'` |
+|                 | font-weight       | Boldness         | Number or CSS weight name     | `400`, `900`, `bold`, `bolder`  |
+|                 | color             | Text colour      | Hex or CSS colour name        | `#FFFFFF`, `white`, `#FF0000`, `red`  |
+|                 | font-size         | Text size        | Number with points or pixels  | `60px`, `48pt`  |
+| #modmessagebox  | bottom            | Gap below box    | Number with pixels or 0       | `0`, `0px`, `5px`, `15px`  |
+|                 | left              | Gap left of box  | Number with pixels or 0       | `0`, `0px`, `5px`, `15px`  |
+|                 | height            | Height of box    | Number with pixels            | `82px`  |
+|                 | background-color  | Box colour       | Hex or CSS colour name        | `#00FF00`, `green`, `#000000`, `black`  |
+
 ### !alert
 
 A moderator may issue an `!alert` command in the twitch to trigger the alert system to display the text following the command.
