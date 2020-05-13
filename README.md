@@ -1,6 +1,6 @@
 # modmessager
 
-Limmy's mod messager aka alert system.
+[Limmy](https://twitch.tv/limmy)'s mod messager aka alert system.
 
 Original work by [Gantee](https://twitch.tv/gantee)
 
