@@ -103,6 +103,7 @@
     function deleteAnimation() {
         hotseatuser = null;
         $("#modmessagebox").animate({width:0}, 500);
+        $("#modmessagebox").removeClass("hotseat").addClass("alert");
         $("#message").animate({"opacity":0, "margin-left":"50px"}, 700);
     }
 
