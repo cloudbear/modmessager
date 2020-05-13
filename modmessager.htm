@@ -95,7 +95,7 @@
     }
 
     function processTimer(message) {
-        const timerRegExp = /{(\d+) (HOURS|MINUTES|SECONDS)}/;
+        const timerRegExp = /{(\d+) (HOURS?|MINUTES?|SECONDS?)}/;
         const timerText = message.replace(timerRegExp, '%timer%');
         const components = message.match(timerRegExp);
         console.log(components);
