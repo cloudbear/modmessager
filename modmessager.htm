@@ -87,7 +87,7 @@
     }
 
     function processTimer(message) {
-        const timerRegExp = /{(\d+) (HOURS?|MINUTES?|SECONDS?)}/;
+        const timerRegExp = /{(\d+(\.\d*)?) (HOURS?|MINUTES?|SECONDS?)}/;
         const timerText = message.replace(timerRegExp, '%timer%');
         const components = message.match(timerRegExp);
         console.log(components);
@@ -95,21 +95,21 @@
             return false;
         }
         const quantity = components[1];
-        const unit = components[2];
+        const unit = components[3];
         
         let milliseconds;
         switch (unit) {
             case 'HOURS':
             case 'HOUR':
-                milliseconds = parseInt(quantity) * 60 * 60 * 1000;
+                milliseconds = parseFloat(quantity) * 60 * 60 * 1000;
                 break;
             case 'MINUTES':
             case 'MINUTE':
-                milliseconds = parseInt(quantity) * 60 * 1000;
+                milliseconds = parseFloat(quantity) * 60 * 1000;
                 break;
             case 'SECONDS':
             case 'SECOND':
-                milliseconds = parseInt(quantity) * 1000;
+                milliseconds = parseFloat(quantity) * 1000;
                 break;
         }
 

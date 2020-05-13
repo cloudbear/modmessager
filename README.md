@@ -56,15 +56,17 @@ E.g. `!alert Here is an alert` displays the alert box with the text "HERE IS AN 
 
 Including a timer expression in braces anywhere in the alert message will produce a countdown in that position in the message, starting at that time.
 
-A timer expression is an integer followed by a time unit, e.g. 'seconds', 'minutes', 'hours'.
+A timer expression is an integer or decimal number followed by a time unit, e.g. 'seconds', 'minutes', 'hours'.
 
 The timer expression will display as a countdown in hh:mm:ss.  The hours component will not display when it is zero and it will disappear when a timer that at an hour or more counts to below an hour.
 
 Timer expression examples:  
 `{1 hour}` -> `1:00:00`  
 `{2 hours}` -> `2:00:00`  
+`{1.5 hours}` -> `1:30:00`  
 `{90 minutes}` -> `1:30:00`  
 `{30 minutes}` -> `30:00`  
+`{2.5 minutes}` -> `2:30`  
 `{1 minute}` -> `1:00`  
 `{90 seconds}` -> `1:30`
 
