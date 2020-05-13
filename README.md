@@ -6,6 +6,21 @@ Original work by [Gantee](https://twitch.tv/gantee)
 
 ## How to use
 
+### Setting it for your channel
+
+To set the messager to watch your channel, find the following code in the top of the main javascript block:
+
+```javascript
+    // Define configuration options
+    const opts = {
+        channels: [
+          "limmy"
+        ]
+    };
+```
+
+Change "limmy" to the name of your channel, i.e. what comes after `twitch.tv/` in the URL.
+
 ### !alert
 
 A moderator may issue an `!alert` command in the twitch to trigger the alert system to display the text following the command.
