@@ -8,7 +8,7 @@ Original work by [Gantee](https://twitch.tv/gantee)
 
 ### Setting it for your channel
 
-To set the messager to watch your channel, find the following code in the top of the main javascript block:
+To set the messager to watch your channel, find the following code in the top of the main javascript block in `modmessager.htm`:
 
 ```javascript
     // Define configuration options
@@ -20,6 +20,14 @@ To set the messager to watch your channel, find the following code in the top of
 ```
 
 Change "limmy" to the name of your channel, i.e. what comes after `twitch.tv/` in the URL.
+
+### Adding to OBS
+
+1. Download the source code and put it in its own folder somewhere with your streaming resources.
+2. Add a browser source. Name it what you like.
+3. Set it to local file and browse to modmessager.htm
+4. Set width and height to the width and height of your stream.
+5. Uncheck 'Shutdown source when not visible' and 'Refresh browser when scene becomes active'.
 
 ### Customisation
 
