@@ -30,9 +30,15 @@
 			width: 0px;
 			height: 82px;
 			overflow: hidden;
-			background-color: #00AA00;
-			
 		}
+
+        .alert {
+            background-color: #00AA00;
+        }
+
+        .hotseat {
+            background-color: #AA1100;
+        }
 	</style>
 
 </head>
@@ -78,6 +84,7 @@
         var textWidth = $("#message").width();
         $("#message").css({"opacity":0, "margin-left":"50px"}); 
         $("#modmessagebox").width(1);
+        $("#modmessagebox").removeClass("hotseat").addClass("alert");
         $("#modmessagebox").animate({width:textWidth+30}, 500);
         $("#message").animate({"opacity":1, "margin-left":"15px"}, 700);
 //        $("#message").animate({width:textWidth+30});
@@ -86,8 +93,8 @@
     function doHotseatAnimation() {
         var textWidth = $("#message").width();
         $("#message").css({"opacity":0, "margin-left":"50px"}); 
-        $("#modmessagebox").css({"background-color":"#aa1100"}); 
         $("#modmessagebox").width(1);
+        $("#modmessagebox").removeClass("alert").addClass("hotseat");
         $("#modmessagebox").animate({width:textWidth+30}, 500);
         $("#message").animate({"opacity":1, "margin-left":"15px"}, 700);
     }
@@ -188,9 +195,8 @@
         } else if (messagefromtwitch.startsWith("!hotseat ")) {
             $("#modmessagebox").show();
             hotseatuser = messagefromtwitch.substr(10).toLowerCase();
-            $("#modmessagebox").css({"background-color":"#aa1100"}); 
             $("#message").text("🔥 " + hotseatuser.toUpperCase() + " IS IN THE HOTSEAT 🔥");
-            doAnimation();
+            doHotseatAnimation();
         }
     }
     
@@ -229,9 +235,8 @@
             } else if (commandName.startsWith("!hotseat ")) {
                 $("#modmessagebox").show();
                 hotseatuser = commandName.substr(10).toLowerCase();
-                $("#modmessagebox").css({"background-color":"#aa1100"}); 
                 $("#message").text("🔥 " + hotseatuser.toUpperCase() + " IS IN THE HOTSEAT 🔥");
-                doAnimation();
+                doHotseatAnimation();
             }
 
             if (context.username == hotseatuser) {
