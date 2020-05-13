@@ -70,6 +70,10 @@
 			doAnimation();
     }
 
+    // Hotseat stuff
+    var hotseatuser = "";
+    var hotseatison = false;
+
     // Animate text
     function doAnimation() {
         var textWidth = $("#message").width();
@@ -79,9 +83,19 @@
         $("#message").animate({"opacity":1, "margin-left":"15px"}, 700);
 //        $("#message").animate({width:textWidth+30});
     }
+
+    function doHotseatAnimation() {
+        var textWidth = $("#message").width();
+        $("#message").css({"opacity":0, "margin-left":"50px"}); 
+        $("#modmessagebox").css({"background-color":"#aa1100"}); 
+        $("#modmessagebox").width(1);
+        $("#modmessagebox").animate({width:textWidth+30}, 500);
+        $("#message").animate({"opacity":1, "margin-left":"15px"}, 700);
+    }
     
     // Animate off
     function deleteAnimation() {
+        hotseatison = false;
         $("#modmessagebox").animate({width:0}, 500);
         $("#message").animate({"opacity":0, "margin-left":"50px"}, 700);
     }
@@ -172,6 +186,13 @@
                 clearInterval(tickIntervalID);
             }
             deleteAnimation();
+        } else if (messagefromtwitch.startsWith("!hotseat ")) {
+            hotseatison = true;
+            $("#modmessagebox").show();
+            hotseatuser = messagefromtwitch.substr(10).toLowerCase();
+            $("#modmessagebox").css({"background-color":"#aa1100"}); 
+            $("#message").text("🔥 " + hotseatuser.toUpperCase() + " IS IN THE HOTSEAT 🔥");
+            doAnimation();
         }
     }
     
@@ -207,6 +228,20 @@
                     clearInterval(tickIntervalID);
                 }
                 deleteAnimation();
+            } else if (commandName.startsWith("!hotseat ")) {
+                hotseatison = true;
+                $("#modmessagebox").show();
+                hotseatuser = commandName.substr(10).toLowerCase();
+                $("#modmessagebox").css({"background-color":"#aa1100"}); 
+                $("#message").text("🔥 " + hotseatuser.toUpperCase() + " IS IN THE HOTSEAT 🔥");
+                doAnimation();
+            }
+
+            if (hotseatison) {
+                if (context.username == hotseatuser) {
+                    $("#message").text("🔥 " + context['display-name'] + ": " + commandName + " 🔥");
+                    doHotseatAnimation();
+                }
             }
         }
 
